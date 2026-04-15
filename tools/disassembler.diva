@@ -1,0 +1,58 @@
+extern func print_int(x: int): void
+extern func print_str(x: str): void
+
+func op_name(op: int): void {
+    if op == 0 { print_str("NOP") }
+    if op == 1 { print_str("HALT") }
+    if op == 2 { print_str("MOV") }
+    if op == 3 { print_str("MOVI") }
+    if op == 4 { print_str("LOAD") }
+    if op == 5 { print_str("STORE") }
+    if op == 16 { print_str("ADD") }
+    if op == 17 { print_str("SUB") }
+    if op == 18 { print_str("MUL") }
+    if op == 19 { print_str("DIV") }
+    if op == 32 { print_str("JMP") }
+    if op == 33 { print_str("JZ") }
+    if op == 34 { print_str("JNZ") }
+    if op == 55 { print_str("CALL") }
+    if op == 56 { print_str("RET") }
+    if op == 64 { print_str("PUSH") }
+    if op == 65 { print_str("POP") }
+    if op == 80 { print_str("IN") }
+    if op == 81 { print_str("OUT") }
+    if op > 81 { print_str("UNK") }
+}
+
+func main(): int {
+    print_str("=== DBIS Disassembler ===\n")
+    print_str("\nPing program bytes:\n")
+    
+    let i = 0
+    while i < 11 {
+        let op = 0
+        if i == 0 { op = 3 }
+        if i == 1 { op = 0 }
+        if i == 2 { op = 80 }
+        if i == 3 { op = 81 }
+        if i == 4 { op = 0 }
+        if i == 5 { op = 3 }
+        if i == 6 { op = 0 }
+        if i == 7 { op = 105 }
+        if i == 8 { op = 81 }
+        if i == 9 { op = 0 }
+        if i == 10 { op = 1 }
+        
+        print_int(i)
+        print_str(": ")
+        op_name(op)
+        print_str(" (0x")
+        if op < 16 { print_str("0") }
+        print_int(op)
+        print_str(")\n")
+        i = i + 1
+    }
+    
+    print_str("\n=== Done ===\n")
+    return 0
+}
