@@ -1,0 +1,31 @@
+# prime.diva - Prime number check
+# Checks if 17 is prime
+
+MOVI R0, 17     # n
+MOVI R1, 2      # i
+MOVI R2, 1      # is_prime = true
+
+LOOP:
+    MOV R3, R0
+    DIV R3, R1
+    MUL R3, R1
+    CMP R3, R0
+    JZ NOT_PRIME
+    
+    MOV R3, R1
+    MUL R3, R1
+    CMP R3, R0
+    JG CHECK_DONE
+    
+    MOVI R2, 1
+    ADD R1, R2
+    
+    JMP LOOP
+
+NOT_PRIME:
+    MOVI R2, 0
+
+CHECK_DONE:
+    CMP R2, R1
+    OUT R2
+    HALT

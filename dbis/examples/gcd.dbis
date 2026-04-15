@@ -1,0 +1,20 @@
+# gcd.diva - GCD computation
+# Computes GCD(48, 18) = 6
+
+MOVI R0, 48
+MOVI R1, 18
+
+LOOP:
+    CMP R1, R0
+    JZ DONE
+    JG GREATER
+    SUB R0, R1
+    JMP LOOP
+
+GREATER:
+    SUB R1, R0
+    JMP LOOP
+
+DONE:
+    OUT R0
+    HALT

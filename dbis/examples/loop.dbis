@@ -1,0 +1,19 @@
+# loop.diva - Loop example
+# Sum numbers 1 to 10 = 55
+
+MOVI R0, 0
+MOVI R1, 1
+MOVI R2, 10
+
+LOOP:
+    CMP R1, R2
+    JZ DONE
+    ADD R0, R1
+    MOVI R2, 1
+    ADD R1, R2
+    MOVI R2, 10
+    JMP LOOP
+
+DONE:
+    OUT R0
+    HALT

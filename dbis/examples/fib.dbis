@@ -1,0 +1,21 @@
+# fib.diva - Fibonacci sequence
+# Computes fibonacci(10) = 55
+
+MOVI R0, 10
+MOVI R1, 0
+MOVI R2, 1
+
+LOOP:
+    CMP R0, R2
+    JZ DONE
+    MOV R3, R1
+    ADD R3, R2
+    MOV R1, R2
+    MOV R2, R3
+    MOVI R3, 1
+    ADD R2, R3
+    JMP LOOP
+
+DONE:
+    OUT R2
+    HALT

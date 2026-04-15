@@ -1,0 +1,17 @@
+# factorial.diva - Factorial computation
+# Computes 5! = 120
+
+MOVI R0, 5
+MOVI R1, 1
+
+LOOP:
+    CMP R0, R1
+    JZ DONE
+    MUL R1, R0
+    MOVI R2, 1
+    SUB R0, R2
+    JMP LOOP
+
+DONE:
+    OUT R1
+    HALT
