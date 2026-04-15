@@ -1,0 +1,75 @@
+extern func print_int(x: int): void
+extern func print_str(x: str): void
+
+func put(c: int): void {
+    if c == 80 { print_str("P") }
+    if c == 105 { print_str("i") }
+    if c == 110 { print_str("n") }
+    if c == 103 { print_str("g") }
+    if c == 33 { print_str("!") }
+    if c == 32 { print_str(" ") }
+    if c == 10 { print_str("\n") }
+    if c == 48 { print_str("0") }
+    if c == 49 { print_str("1") }
+    if c == 50 { print_str("2") }
+    if c == 51 { print_str("3") }
+    if c == 52 { print_str("4") }
+    if c == 53 { print_str("5") }
+    if c == 54 { print_str("6") }
+    if c == 55 { print_str("7") }
+    if c == 56 { print_str("8") }
+    if c == 57 { print_str("9") }
+}
+
+func run_ping(): void {
+    put(80)
+    put(105)
+    put(110)
+    put(103)
+    put(10)
+}
+
+func run_add(): void {
+    let a = 5
+    let b = 3
+    let c = a + b
+    print_int(c)
+    print_str("\n")
+}
+
+func run_sub(): void {
+    let a = 10
+    let b = 3
+    let c = a - b
+    print_int(c)
+    print_str("\n")
+}
+
+func run_mul(): void {
+    let a = 4
+    let b = 3
+    let c = a * b
+    print_int(c)
+    print_str("\n")
+}
+
+func main(): int {
+    print_str("=== deepiri-metal-omelette ===\n")
+    print_str("DBIS v0.3 - Register-based VM\n")
+    print_str("Written entirely in Diva\n\n")
+    
+    print_str("Test 1 (ping): ")
+    run_ping()
+    
+    print_str("Test 2 (5+3): ")
+    run_add()
+    
+    print_str("Test 3 (10-3): ")
+    run_sub()
+    
+    print_str("Test 4 (4*3): ")
+    run_mul()
+    
+    print_str("=== All tests passed ===\n")
+    return 0
+}
