@@ -1,0 +1,436 @@
+extern func print_int(x: int): void
+extern func print_str(x: str): void
+extern func write(fd: int, x: str): int
+extern func exit(status: int): void
+
+class CLI {
+    var args :: str[]
+    
+    func new(args: str[]): CLI {
+        let c = CLI {}
+        c.args = args
+        return c
+    }
+    
+    func run(): void {
+        if self.args.length < 2 {
+            self.help()
+            return
+        }
+        
+        let cmd = self.args[1]
+        
+        if cmd == "run" {
+            self.run_prog()
+        } else if cmd == "asm" {
+            self.assemble()
+        } else if cmd == "dis" {
+            self.disassemble()
+        } else if cmd == "help" {
+            self.help()
+        } else {
+            print_str("Unknown command: ")
+            print_str(cmd)
+            print_str("\n")
+            self.help()
+        }
+    }
+    
+    func run_prog(): void {
+        if self.args.length < 3 {
+            print_str("Usage: omelette run <program.bin>\n")
+            return
+        }
+        
+        let filename = self.args[2]
+        print_str("Loading: ")
+        print_str(filename)
+        print_str("\n")
+        
+        let vm = VM.new()
+        let program = self.read_bin(filename)
+        
+        if program.length == 0 {
+            print_str("Failed to load program\n")
+            return
+        }
+        
+        print_str("Executing ")
+        print_int(program.length)
+        print_str(" bytes...\n")
+        
+        vm.run(program)
+        
+        print_str("\nDone.\n")
+    }
+    
+    func read_bin(filename: str): int[] {
+        return []
+    }
+    
+    func assemble(): void {
+        if self.args.length < 3 {
+            print_str("Usage: omelette asm <source.diva>\n")
+            return
+        }
+        
+        let src = self.args[2]
+        let out = "bin/out.bin"
+        
+        if self.args.length >= 4 {
+            out = self.args[3]
+        }
+        
+        print_str("Assembling: ")
+        print_str(src)
+        print_str(" -> ")
+        print_str(out)
+        print_str("\n")
+        print_str("Use diva to compile assembler.diva\n")
+    }
+    
+    func disassemble(): void {
+        if self.args.length < 3 {
+            print_str("Usage: omelette dis <program.bin>\n")
+            return
+        }
+        
+        let filename = self.args[2]
+        print_str("Disassembling: ")
+        print_str(filename)
+        print_str("\n")
+        
+        let dis = Disassembler.new()
+        let program = self.read_bin(filename)
+        
+        if program.length == 0 {
+            print_str("Failed to load program\n")
+            return
+        }
+        
+        let output = dis.disassemble(program)
+        print_str(output)
+    }
+    
+    func help(): void {
+        print_str("deepiri-metal-omelette CLI\n")
+        print_str("==========================\n\n")
+        print_str("Commands:\n")
+        print_str("  run <file.bin>   - Run DBIS binary\n")
+        print_str("  asm <src> <out>  - Assemble source\n")
+        print_str("  dis <file.bin>   - Disassemble binary\n")
+        print_str("  help             - Show this help\n\n")
+        print_str("DBIS v0.3 - Register-based VM\n")
+        print_str("All tools written in Diva\n")
+    }
+}
+
+class Disassembler {
+    func new(): Disassembler {
+        return Disassembler {}
+    }
+    
+    func disassemble(program: int[]): str {
+        let output = ""
+        let pc = 0
+        
+        while pc < program.length {
+            if pc >= program.length { break }
+            let opcode = program[pc]
+            let line = self.decode(program, pc)
+            output = output + line + "\n"
+            pc = pc + self.len(program, pc)
+        }
+        
+        return output
+    }
+    
+    func len(program: int[], pc: int): int {
+        if pc >= program.length { return 0 }
+        let op = program[pc]
+        if op == 0 || op == 1 || op == 56 { return 1 }
+        if op >= 2 && op <= 7 { return 2 }
+        if op == 3 || op == 6 || op == 7 { return 3 }
+        if op >= 16 && op <= 27 { return 2 }
+        if op >= 32 && op <= 38 { return 2 }
+        if op >= 64 && op <= 67 { return 2 }
+        if op == 80 || op == 81 { return 2 }
+        return 1
+    }
+    
+    func decode(program: int[], pc: int): str {
+        if pc >= program.length { return "INVALID" }
+        let op = program[pc]
+        let addr = self.hex(pc)
+        
+        if op == 0 { return addr + " NOP" }
+        if op == 1 { return addr + " HALT" }
+        if op == 3 {
+            if pc + 2 < program.length {
+                let reg = program[pc + 1]
+                let imm = program[pc + 2]
+                return addr + " MOVI R" + self.n2s(reg) + ", " + self.n2s(imm)
+            }
+        }
+        if op == 16 {
+            if pc + 1 < program.length {
+                let rb = program[pc + 1]
+                let rd = (rb >> 4) & 0xF
+                let rs = rb & 0xF
+                return addr + " ADD R" + self.n2s(rd) + ", R" + self.n2s(rs)
+            }
+        }
+        if op == 17 {
+            if pc + 1 < program.length {
+                let rb = program[pc + 1]
+                let rd = (rb >> 4) & 0xF
+                let rs = rb & 0xF
+                return addr + " SUB R" + self.n2s(rd) + ", R" + self.n2s(rs)
+            }
+        }
+        if op == 32 {
+            if pc + 1 < program.length {
+                let a = program[pc + 1]
+                return addr + " JMP " + self.n2s(a)
+            }
+        }
+        if op == 64 {
+            if pc + 1 < program.length {
+                let r = program[pc + 1]
+                return addr + " PUSH R" + self.n2s(r)
+            }
+        }
+        if op == 65 {
+            if pc + 1 < program.length {
+                let r = program[pc + 1]
+                return addr + " POP R" + self.n2s(r)
+            }
+        }
+        if op == 81 {
+            if pc + 1 < program.length {
+                let r = program[pc + 1]
+                return addr + " OUT R" + self.n2s(r)
+            }
+        }
+        
+        return addr + " DB " + self.n2s(op)
+    }
+    
+    func hex(x: int): str {
+        if x < 16 { return "0x0" + self.digit(x) }
+        return "0x" + self.digit(x / 16) + self.digit(x % 16)
+    }
+    
+    func digit(x: int): str {
+        if x < 10 { return self.n2s(x) }
+        if x == 10 { return "A" }
+        if x == 11 { return "B" }
+        if x == 12 { return "C" }
+        if x == 13 { return "D" }
+        if x == 14 { return "E" }
+        return "F"
+    }
+    
+    func n2s(x: int): str {
+        if x == 0 { return "0" }
+        if x == 1 { return "1" }
+        if x == 2 { return "2" }
+        if x == 3 { return "3" }
+        if x == 4 { return "4" }
+        if x == 5 { return "5" }
+        if x == 6 { return "6" }
+        if x == 7 { return "7" }
+        if x == 8 { return "8" }
+        if x == 9 { return "9" }
+        if x == 10 { return "10" }
+        if x == 11 { return "11" }
+        if x == 12 { return "12" }
+        if x == 13 { return "13" }
+        if x == 14 { return "14" }
+        if x == 15 { return "15" }
+        return "?"
+    }
+}
+
+class VM {
+    var regs :: int[]
+    var ram :: int[]
+    var pc :: int
+    var sp :: int
+    var running :: bool
+    
+    func new(): VM {
+        let v = VM {}
+        v.regs = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        v.ram = self.mk_ram()
+        v.pc = 0
+        v.sp = 255
+        v.running = false
+        return v
+    }
+    
+    func mk_ram(): int[] {
+        let m = []
+        let i = 0
+        while i < 256 {
+            m = m + [0]
+            i = i + 1
+        }
+        return m
+    }
+    
+    func load(program: int[]): void {
+        let i = 0
+        while i < program.length {
+            if i < 256 { self.ram[i] = program[i] }
+            i = i + 1
+        }
+    }
+    
+    func run(program: int[]): void {
+        self.load(program)
+        self.pc = 0
+        self.running = true
+        
+        while self.running {
+            if self.pc >= 256 {
+                self.running = false
+                return
+            }
+            let op = self.ram[self.pc]
+            self.pc = self.pc + 1
+            self.exec(op)
+        }
+    }
+    
+    func exec(op: int): void {
+        if op == 0 { }
+        else if op == 1 { self.running = false }
+        else if op == 3 { self.op_movi() }
+        else if op == 16 { self.op_arith(0) }
+        else if op == 17 { self.op_arith(1) }
+        else if op == 18 { self.op_arith(2) }
+        else if op == 19 { self.op_arith(3) }
+        else if op == 32 { self.op_jmp() }
+        else if op == 33 { self.op_jz() }
+        else if op == 34 { self.op_jnz() }
+        else if op == 55 { self.op_call() }
+        else if op == 56 { self.op_ret() }
+        else if op == 64 { self.op_push() }
+        else if op == 65 { self.op_pop() }
+        else if op == 80 { self.op_in() }
+        else if op == 81 { self.op_out() }
+    }
+    
+    func op_movi(): void {
+        if self.pc + 1 >= 256 { return }
+        let r = self.ram[self.pc]
+        self.pc = self.pc + 1
+        let imm = self.ram[self.pc]
+        self.pc = self.pc + 1
+        self.regs[r] = imm
+    }
+    
+    func op_arith(kind: int): void {
+        if self.pc + 1 >= 256 { return }
+        let rb = self.ram[self.pc]
+        self.pc = self.pc + 1
+        let rd = (rb >> 4) & 0xF
+        let rs = rb & 0xF
+        let a = self.regs[rd]
+        let b = self.regs[rs]
+        let res = 0
+        if kind == 0 { res = a + b }
+        else if kind == 1 { res = a - b }
+        else if kind == 2 { res = a * b }
+        else if kind == 3 { if b != 0 { res = a / b } }
+        self.regs[rd] = res
+    }
+    
+    func op_jmp(): void {
+        if self.pc >= 256 { return }
+        self.pc = self.ram[self.pc]
+    }
+    
+    func op_jz(): void {
+        if self.pc >= 256 { return }
+        let addr = self.ram[self.pc]
+        self.pc = self.pc + 1
+        if self.regs[0] == 0 { self.pc = addr }
+    }
+    
+    func op_jnz(): void {
+        if self.pc >= 256 { return }
+        let addr = self.ram[self.pc]
+        self.pc = self.pc + 1
+        if self.regs[0] != 0 { self.pc = addr }
+    }
+    
+    func op_call(): void {
+        if self.pc >= 256 { return }
+        let addr = self.ram[self.pc]
+        self.pc = self.pc + 1
+        self.push(self.pc)
+        self.pc = addr
+    }
+    
+    func op_ret(): void {
+        self.pc = self.pop()
+    }
+    
+    func op_push(): void {
+        if self.pc >= 256 { return }
+        let src = self.ram[self.pc]
+        self.pc = self.pc + 1
+        self.push(self.regs[src])
+    }
+    
+    func op_pop(): void {
+        if self.pc >= 256 { return }
+        let dest = self.ram[self.pc]
+        self.pc = self.pc + 1
+        self.regs[dest] = self.pop()
+    }
+    
+    func op_in(): void {
+        if self.pc >= 256 { return }
+        let d = self.ram[self.pc]
+        self.pc = self.pc + 1
+        self.regs[d] = 0
+    }
+    
+    func op_out(): void {
+        if self.pc >= 256 { return }
+        let s = self.ram[self.pc]
+        self.pc = self.pc + 1
+        let c = self.regs[s]
+        if c > 0 && c < 128 {
+            self.put(c)
+        }
+    }
+    
+    func push(val: int): void {
+        if self.sp > 0 {
+            self.sp = self.sp - 1
+            self.ram[self.sp] = val
+        }
+    }
+    
+    func pop(): int {
+        if self.sp < 256 {
+            let v = self.ram[self.sp]
+            self.sp = self.sp + 1
+            return v
+        }
+        return 0
+    }
+    
+    func put(c: int): void {
+    }
+}
+
+func main(): int {
+    let cli = CLI.new([])
+    cli.run()
+    return 0
+}
