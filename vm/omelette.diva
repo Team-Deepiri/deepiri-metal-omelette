@@ -1,75 +1,133 @@
 extern func print_int(x: int): void
 extern func print_str(x: str): void
 
-func put(c: int): void {
-    if c == 80 { print_str("P") }
-    if c == 105 { print_str("i") }
-    if c == 110 { print_str("n") }
-    if c == 103 { print_str("g") }
-    if c == 33 { print_str("!") }
-    if c == 32 { print_str(" ") }
-    if c == 10 { print_str("\n") }
-    if c == 48 { print_str("0") }
-    if c == 49 { print_str("1") }
-    if c == 50 { print_str("2") }
-    if c == 51 { print_str("3") }
-    if c == 52 { print_str("4") }
-    if c == 53 { print_str("5") }
-    if c == 54 { print_str("6") }
-    if c == 55 { print_str("7") }
-    if c == 56 { print_str("8") }
-    if c == 57 { print_str("9") }
-}
-
-func run_ping(): void {
-    put(80)
-    put(105)
-    put(110)
-    put(103)
-    put(10)
-}
-
-func run_add(): void {
-    let a = 5
-    let b = 3
-    let c = a + b
-    print_int(c)
-    print_str("\n")
-}
-
-func run_sub(): void {
-    let a = 10
-    let b = 3
-    let c = a - b
-    print_int(c)
-    print_str("\n")
-}
-
-func run_mul(): void {
-    let a = 4
-    let b = 3
-    let c = a * b
-    print_int(c)
-    print_str("\n")
-}
-
 func main(): int {
-    print_str("=== deepiri-metal-omelette ===\n")
-    print_str("DBIS v0.3 - Register-based VM\n")
-    print_str("Written entirely in Diva\n\n")
+    print_str("=== DBIS VM v0.3 - Test Suite ===\n\n")
     
-    print_str("Test 1 (ping): ")
-    run_ping()
+    print_str("String output:\n")
+    print_str("PING: Ping!\n")
+    print_str("HELLO: Hello World!\n")
     
-    print_str("Test 2 (5+3): ")
-    run_add()
+    print_str("\nArithmetic:\n")
+    print_str("ADD (5+3): ")
+    print_int(5 + 3)
+    print_str("\n")
     
-    print_str("Test 3 (10-3): ")
-    run_sub()
+    print_str("SUB (10-3): ")
+    print_int(10 - 3)
+    print_str("\n")
     
-    print_str("Test 4 (4*3): ")
-    run_mul()
+    print_str("MUL (4*3): ")
+    print_int(4 * 3)
+    print_str("\n")
     
-    print_str("=== All tests passed ===\n")
+    print_str("DIV (12/4): ")
+    print_int(12 / 4)
+    print_str("\n")
+    
+    print_str("\nLoops & Math:\n")
+    
+    print_str("LOOP (sum 1-10): ")
+    let sum = 0
+    let i = 1
+    while i <= 10 {
+        sum = sum + i
+        i = i + 1
+    }
+    print_int(sum)
+    print_str("\n")
+    
+    print_str("FIB (10): ")
+    let n = 10
+    let a = 0
+    let b = 1
+    let j = 2
+    while j <= n {
+        let tmp = a + b
+        a = b
+        b = tmp
+        j = j + 1
+    }
+    print_int(b)
+    print_str("\n")
+    
+    print_str("FACT (5): ")
+    let fn = 5
+    let result = 1
+    while fn > 1 {
+        result = result * fn
+        fn = fn - 1
+    }
+    print_int(result)
+    print_str("\n")
+    
+    print_str("GCD (48,18): ")
+    let ga = 48
+    let gb = 18
+    while ga - gb != 0 {
+        if ga > gb { ga = ga - gb }
+        else { gb = gb - ga }
+    }
+    print_int(ga)
+    print_str("\n")
+    
+    print_str("POW (2^8): ")
+    let base = 2
+    let exp = 8
+    let pow = 1
+    while exp > 0 {
+        pow = pow * base
+        exp = exp - 1
+    }
+    print_int(pow)
+    print_str("\n")
+    
+    print_str("PRIME (17): ")
+    let pn = 17
+    let prime = 1
+    let pi = 2
+    while pi * pi <= pn {
+        if pn - (pn / pi) * pi == 0 { prime = 0 }
+        pi = pi + 1
+    }
+    if prime == 1 { print_str("yes") }
+    else { print_str("no") }
+    print_str("\n")
+    
+    print_str("REVERSE (12345): ")
+    let rn = 12345
+    let rev = 0
+    while rn > 0 {
+        let d = rn - (rn / 10) * 10
+        rev = rev * 10 + d
+        rn = rn / 10
+    }
+    print_int(rev)
+    print_str("\n")
+    
+    print_str("MAX (7,3): ")
+    let x = 7
+    let y = 3
+    if x >= y { print_int(x) }
+    else { print_int(y) }
+    print_str("\n")
+    
+    print_str("ABS (-5): ")
+    let neg = 0 - 5
+    if neg < 0 { neg = 0 - neg }
+    print_int(neg)
+    print_str("\n")
+    
+    print_str("COUNTDIGITS (12345): ")
+    let cd = 12345
+    let count = 0
+    while cd > 0 {
+        count = count + 1
+        cd = cd / 10
+    }
+    print_int(count)
+    print_str("\n")
+    
+    print_str("\n=== All tests complete ===\n")
     return 0
 }
