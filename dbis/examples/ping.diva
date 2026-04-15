@@ -1,0 +1,12 @@
+# ping.diva - DBIS assembly source
+# Output: "ping"
+
+MOVI R0, 80
+OUT R0
+MOVI R0, 105
+OUT R0
+MOVI R0, 110
+OUT R0
+MOVI R0, 103
+OUT R0
+HALT
