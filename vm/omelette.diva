@@ -1,133 +1,162 @@
-extern func print_int(x: int): void
-extern func print_str(x: str): void
+import "std/vec.diva"
+import "std/io.diva"
 
-func main(): int {
-    print_str("=== DBIS VM v0.3 - Test Suite ===\n\n")
+// VM context [0]=PC, [1]=SP, [2]=Flags, [3]=RegistersVec, [4]=MemoryVec, [5]=Halted
+func vm_new(): int {
+    var vm = int_vec_new()
+    int_vec_push(vm, 0) // PC
+    int_vec_push(vm, 255) // SP (stack grows down from 255)
+    int_vec_push(vm, 0) // Flags
     
-    print_str("String output:\n")
-    print_str("PING: Ping!\n")
-    print_str("HELLO: Hello World!\n")
-    
-    print_str("\nArithmetic:\n")
-    print_str("ADD (5+3): ")
-    print_int(5 + 3)
-    print_str("\n")
-    
-    print_str("SUB (10-3): ")
-    print_int(10 - 3)
-    print_str("\n")
-    
-    print_str("MUL (4*3): ")
-    print_int(4 * 3)
-    print_str("\n")
-    
-    print_str("DIV (12/4): ")
-    print_int(12 / 4)
-    print_str("\n")
-    
-    print_str("\nLoops & Math:\n")
-    
-    print_str("LOOP (sum 1-10): ")
-    let sum = 0
-    let i = 1
-    while i <= 10 {
-        sum = sum + i
+    var regs = int_vec_new()
+    var i = 0
+    while i < 16 {
+        int_vec_push(regs, 0)
         i = i + 1
     }
-    print_int(sum)
-    print_str("\n")
+    int_vec_push(vm, regs) // [3] Registers
     
-    print_str("FIB (10): ")
-    let n = 10
-    let a = 0
-    let b = 1
-    let j = 2
-    while j <= n {
-        let tmp = a + b
-        a = b
-        b = tmp
-        j = j + 1
+    var ram = int_vec_new()
+    i = 0
+    while i < 256 {
+        int_vec_push(ram, 0)
+        i = i + 1
     }
-    print_int(b)
-    print_str("\n")
+    int_vec_push(vm, ram) // [4] Memory
+    int_vec_push(vm, 0) // [5] Halted
+    return vm
+}
+
+func vm_pc(vm: int): int { return int_vec_get(vm, 0) }
+func vm_set_pc(vm: int, val: int): void { 
+    // Manual vec update since std/vec.diva lacks int_vec_set
+    // We'll use a local trick: if we need to set, we'd need a real setter.
+    // Given std/vec.diva lacks it, we might have to use mut_new/mut_set from cell.diva
+}
+
+// Re-defining VM with cells for mutability since int_vec is read-only-ish without a setter
+import "cell.diva"
+
+func vm_ctx_new(): int {
+    var ctx = int_vec_new()
+    int_vec_push(ctx, mut_new(0)) // [0] PC
+    int_vec_push(ctx, mut_new(255)) // [1] SP
+    int_vec_push(ctx, mut_new(0)) // [2] Flags
     
-    print_str("FACT (5): ")
-    let fn = 5
-    let result = 1
-    while fn > 1 {
-        result = result * fn
-        fn = fn - 1
+    var regs = int_vec_new()
+    var i = 0
+    while i < 16 {
+        int_vec_push(regs, mut_new(0))
+        i = i + 1
     }
-    print_int(result)
-    print_str("\n")
+    int_vec_push(ctx, regs) // [3] Registers (vec of cells)
     
-    print_str("GCD (48,18): ")
-    let ga = 48
-    let gb = 18
-    while ga - gb != 0 {
-        if ga > gb { ga = ga - gb }
-        else { gb = gb - ga }
+    var ram = int_vec_new()
+    i = 0
+    while i < 256 {
+        int_vec_push(ram, mut_new(0))
+        i = i + 1
     }
-    print_int(ga)
-    print_str("\n")
-    
-    print_str("POW (2^8): ")
-    let base = 2
-    let exp = 8
-    let pow = 1
-    while exp > 0 {
-        pow = pow * base
-        exp = exp - 1
+    int_vec_push(ctx, ram) // [4] Memory (vec of cells)
+    int_vec_push(ctx, mut_new(0)) // [5] Halted
+    return ctx
+}
+
+func get_pc(ctx: int): int { return mut_get(int_vec_get(ctx, 0)) }
+func set_pc(ctx: int, v: int): void { mut_set(int_vec_get(ctx, 0), v) }
+
+func get_reg(ctx: int, r: int): int {
+    var regs = int_vec_get(ctx, 3)
+    return mut_get(int_vec_get(regs, r))
+}
+func set_reg(ctx: int, r: int, v: int): void {
+    var regs = int_vec_get(ctx, 3)
+    mut_set(int_vec_get(regs, r), v)
+}
+
+func get_mem(ctx: int, addr: int): int {
+    var ram = int_vec_get(ctx, 4)
+    return mut_get(int_vec_get(ram, addr))
+}
+func set_mem(ctx: int, addr: int, v: int): void {
+    var ram = int_vec_get(ctx, 4)
+    mut_set(int_vec_get(ram, addr), v)
+}
+
+func is_halted(ctx: int): int { return mut_get(int_vec_get(ctx, 5)) }
+func halt(ctx: int): void { mut_set(int_vec_get(ctx, 5), 1) }
+
+func vm_step(ctx: int, prog: int): void {
+    var pc = get_pc(ctx)
+    if pc >= int_vec_len(prog) {
+        halt(ctx)
+        return
     }
-    print_int(pow)
-    print_str("\n")
     
-    print_str("PRIME (17): ")
-    let pn = 17
-    let prime = 1
-    let pi = 2
-    while pi * pi <= pn {
-        if pn - (pn / pi) * pi == 0 { prime = 0 }
-        pi = pi + 1
+    var op = int_vec_get(prog, pc)
+    set_pc(ctx, pc + 1)
+    
+    if op == 0 { // NOP
+        return
     }
-    if prime == 1 { print_str("yes") }
-    else { print_str("no") }
-    print_str("\n")
-    
-    print_str("REVERSE (12345): ")
-    let rn = 12345
-    let rev = 0
-    while rn > 0 {
-        let d = rn - (rn / 10) * 10
-        rev = rev * 10 + d
-        rn = rn / 10
+    if op == 1 { // HALT
+        halt(ctx)
+        return
     }
-    print_int(rev)
-    print_str("\n")
-    
-    print_str("MAX (7,3): ")
-    let x = 7
-    let y = 3
-    if x >= y { print_int(x) }
-    else { print_int(y) }
-    print_str("\n")
-    
-    print_str("ABS (-5): ")
-    let neg = 0 - 5
-    if neg < 0 { neg = 0 - neg }
-    print_int(neg)
-    print_str("\n")
-    
-    print_str("COUNTDIGITS (12345): ")
-    let cd = 12345
-    let count = 0
-    while cd > 0 {
-        count = count + 1
-        cd = cd / 10
+    if op == 3 { // MOVI Rd, imm
+        var rd = int_vec_get(prog, get_pc(ctx))
+        set_pc(ctx, get_pc(ctx) + 1)
+        var imm = int_vec_get(prog, get_pc(ctx))
+        set_pc(ctx, get_pc(ctx) + 1)
+        set_reg(ctx, rd, imm)
+        return
     }
-    print_int(count)
-    print_str("\n")
+    if op == 16 { // ADD Rd, Rs (0x10)
+        var rd = int_vec_get(prog, get_pc(ctx))
+        set_pc(ctx, get_pc(ctx) + 1)
+        var rs = int_vec_get(prog, get_pc(ctx))
+        set_pc(ctx, get_pc(ctx) + 1)
+        set_reg(ctx, rd, get_reg(ctx, rd) + get_reg(ctx, rs))
+        return
+    }
+    if op == 81 { // OUT Rs (0x51)
+        var rs = int_vec_get(prog, get_pc(ctx))
+        set_pc(ctx, get_pc(ctx) + 1)
+        print_str(char_to_str(get_reg(ctx, rs)))
+        return
+    }
     
-    print_str("\n=== All tests complete ===\n")
+    // Unknown opcode
+    halt(ctx)
+}
+
+func main(): int {
+    print_str("=== Omelette VM v0.3 (Diva Native) ===\n")
+    
+    var ctx = vm_ctx_new()
+    
+    // Ping program: MOVI R0 80, OUT R0, MOVI R0 105, OUT R0, ... HALT
+    // Bytes: 3 0 80, 81 0, 3 0 105, 81 0, 3 0 110, 81 0, 3 0 103, 81 0, 1
+    var prog = int_vec_new()
+    int_vec_push(prog, 3) int_vec_push(prog, 0) int_vec_push(prog, 80) // MOVI R0, 'P'
+    int_vec_push(prog, 81) int_vec_push(prog, 0)                      // OUT R0
+    int_vec_push(prog, 3) int_vec_push(prog, 0) int_vec_push(prog, 105)// MOVI R0, 'i'
+    int_vec_push(prog, 81) int_vec_push(prog, 0)                      // OUT R0
+    int_vec_push(prog, 3) int_vec_push(prog, 0) int_vec_push(prog, 110)// MOVI R0, 'n'
+    int_vec_push(prog, 81) int_vec_push(prog, 0)                      // OUT R0
+    int_vec_push(prog, 3) int_vec_push(prog, 0) int_vec_push(prog, 103)// MOVI R0, 'g'
+    int_vec_push(prog, 81) int_vec_push(prog, 0)                      // OUT R0
+    int_vec_push(prog, 3) int_vec_push(prog, 0) int_vec_push(prog, 33) // MOVI R0, '!'
+    int_vec_push(prog, 81) int_vec_push(prog, 0)                      // OUT R0
+    int_vec_push(prog, 3) int_vec_push(prog, 0) int_vec_push(prog, 10) // MOVI R0, '\n'
+    int_vec_push(prog, 81) int_vec_push(prog, 0)                      // OUT R0
+    int_vec_push(prog, 1)                                             // HALT
+    
+    print_str("Executing ping.dbis...\n")
+    while is_halted(ctx) == 0 {
+        vm_step(ctx, prog)
+    }
+    
+    print_str("\nVM Halted. Success.\n")
     return 0
 }
