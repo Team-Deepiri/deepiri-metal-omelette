@@ -1,0 +1,122 @@
+extern func print_int(x: int): void
+extern func print_str(x: str): void
+
+func show_header(): int {
+    print_str("=== DBIS Standard Library ===\n")
+    print_str("Built-in functions for DBIS programs\n\n")
+    return 0
+}
+
+func lib_print(): int {
+    print_str("## print\n")
+    print_str("  print() - Print value to output\n")
+    print_str("  Usage: MOVI R0, 65; CALL print\n\n")
+    return 0
+}
+
+func lib_read(): int {
+    print_str("## read\n")
+    print_str("  read() - Read input\n")
+    print_str("  Usage: CALL read; OUT R0\n\n")
+    return 0
+}
+
+func lib_strcmp(): int {
+    print_str("## strcmp\n")
+    print_str("  strcmp(a, b) - Compare strings\n")
+    print_str("  Returns: 0 if equal, else non-zero\n\n")
+    return 0
+}
+
+func lib_strcpy(): int {
+    print_str("## strcpy\n")
+    print_str("  strcpy(dest, src) - Copy string\n\n")
+    return 0
+}
+
+func lib_strcat(): int {
+    print_str("## strcat\n")
+    print_str("  strcat(dest, src) - Concatenate\n\n")
+    return 0
+}
+
+func lib_strlen(): int {
+    print_str("## strlen\n")
+    print_str("  strlen(s) - Get string length\n\n")
+    return 0
+}
+
+func lib_atoi(): int {
+    print_str("## atoi\n")
+    print_str("  atoi(s) - ASCII to integer\n\n")
+    return 0
+}
+
+func lib_itoa(): int {
+    print_str("## itoa\n")
+    print_str("  itoa(n) - Integer to ASCII\n\n")
+    return 0
+}
+
+func lib_memset(): int {
+    print_str("## memset\n")
+    print_str("  memset(addr, val, n) - Set memory\n\n")
+    return 0
+}
+
+func lib_memcpy(): int {
+    print_str("## memcpy\n")
+    print_str("  memcpy(dest, src, n) - Copy memory\n\n")
+    return 0
+}
+
+func lib_memcmp(): int {
+    print_str("## memcmp\n")
+    print_str("  memcmp(a, b, n) - Compare memory\n\n")
+    return 0
+}
+
+func lib_rand(): int {
+    print_str("## rand\n")
+    print_str("  rand() - Random number\n\n")
+    return 0
+}
+
+func lib_srand(): int {
+    print_str("## srand\n")
+    print_str("  srand(seed) - Seed random\n\n")
+    return 0
+}
+
+func lib_qsort(): int {
+    print_str("## qsort\n")
+    print_str("  qsort(arr, n, size, cmp) - Quick sort\n\n")
+    return 0
+}
+
+func lib_bsearch(): int {
+    print_str("## bsearch\n")
+    print_str("  bsearch(key, arr, n, size, cmp) - Binary search\n\n")
+    return 0
+}
+
+func main(): int {
+    show_header()
+    lib_print()
+    lib_read()
+    lib_strcmp()
+    lib_strcpy()
+    lib_strcat()
+    lib_strlen()
+    lib_atoi()
+    lib_itoa()
+    lib_memset()
+    lib_memcpy()
+    lib_memcmp()
+    lib_rand()
+    lib_srand()
+    lib_qsort()
+    lib_bsearch()
+    print_str("=== End of Library ===\n")
+    return 0
+}

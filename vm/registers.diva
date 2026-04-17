@@ -1,0 +1,24 @@
+extern func print_int(x: int): void
+extern func print_str(x: str): void
+
+func main(): int {
+    print_str("=== Register Set ===\n\n")
+    print_str("R0: 0 (accumulator)\n")
+    print_str("R1: 0\n")
+    print_str("R2: 0\n")
+    print_str("R3: 0\n")
+    print_str("R4: 0 (callee-saved)\n")
+    print_str("R5: 0\n")
+    print_str("R6: 0\n")
+    print_str("R7: 0\n")
+    print_str("R8: 0 (caller-saved)\n")
+    print_str("R9: 0\n")
+    print_str("R10: 0\n")
+    print_str("R11: 0\n")
+    print_str("R12: 0 (frame pointer)\n")
+    print_str("R13: 0 (stack pointer)\n")
+    print_str("R14: 0 (link register)\n")
+    print_str("R15: 0 (program counter)\n")
+    print_str("\n=== Ready ===\n")
+    return 0
+}

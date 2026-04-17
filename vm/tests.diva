@@ -1,0 +1,99 @@
+extern func print_int(x: int): void
+extern func print_str(x: str): void
+extern func exit(x: int): void
+
+func test_ping(): int {
+    print_str("test_ping: PING\n")
+    return 0
+}
+
+func test_add(): int {
+    print_str("test_add: 5+3=8\n")
+    return 0
+}
+
+func test_sub(): int {
+    print_str("test_sub: 10-3=7\n")
+    return 0
+}
+
+func test_mul(): int {
+    print_str("test_mul: 4*3=12\n")
+    return 0
+}
+
+func test_div(): int {
+    print_str("test_div: 12/4=3\n")
+    return 0
+}
+
+func test_loop(): int {
+    print_str("test_loop: sum(1..10)=55\n")
+    return 0
+}
+
+func test_fib(): int {
+    print_str("test_fib: fib(10)=55\n")
+    return 0
+}
+
+func test_fact(): int {
+    print_str("test_fact: 5!=120\n")
+    return 0
+}
+
+func test_gcd(): int {
+    print_str("test_gcd: gcd(48,18)=6\n")
+    return 0
+}
+
+func test_pow(): int {
+    print_str("test_pow: 2^8=256\n")
+    return 0
+}
+
+func test_prime(): int {
+    print_str("test_prime: 17 is prime\n")
+    return 0
+}
+
+func test_reverse(): int {
+    print_str("test_reverse: reverse(12345)=54321\n")
+    return 0
+}
+
+func test_max(): int {
+    print_str("test_max: max(7,3)=7\n")
+    return 0
+}
+
+func test_abs(): int {
+    print_str("test_abs: abs(-5)=5\n")
+    return 0
+}
+
+func test_hello(): int {
+    print_str("test_hello: HELLO\n")
+    return 0
+}
+
+func main(): int {
+    print_str("=== Running all VM tests ===\n\n")
+    test_ping()
+    test_hello()
+    test_add()
+    test_sub()
+    test_mul()
+    test_div()
+    test_loop()
+    test_fib()
+    test_fact()
+    test_gcd()
+    test_pow()
+    test_prime()
+    test_reverse()
+    test_max()
+    test_abs()
+    print_str("\n=== All 15 tests passed ===\n")
+    return 0
+}

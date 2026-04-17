@@ -1,35 +1,86 @@
 extern func print_int(x: int): void
 extern func print_str(x: str): void
+extern func exit(x: int): void
+
+func show_help(): int {
+    print_str("=== deepiri-metal-omelette CLI ===\n")
+    print_str("DBIS v0.3 - Binary execution substrate\n")
+    print_str("100%% Diva - All components written in Diva\n\n")
+    return 0
+}
+
+func show_usage(): int {
+    print_str("Usage:\n")
+    print_str("  diva run vm/omelette.diva        - Run VM with test suite\n")
+    print_str("  diva run cli/omelette.diva       - Show this help\n")
+    print_str("  diva run tools/assembler.diva     - Show assembler reference\n")
+    print_str("  diva run tools/disassembler.diva   - Show disassembler reference\n\n")
+    return 0
+}
+
+func show_examples(): int {
+    print_str("Example programs (.dbis):\n")
+    print_str("  ping.dbis         - Print 'Ping' (string output)\n")
+    print_str("  add.dbis         - Add 5+3=8 (arithmetic)\n")
+    print_str("  sub.dbis        - Sub 10-3=7 (arithmetic)\n")
+    print_str("  mul.dbis         - Mul 4*3=12 (arithmetic)\n")
+    print_str("  div.dbis         - Div 12/4=3 (arithmetic)\n")
+    print_str("  loop.dbis       - Sum 1-10=55 (loop)\n")
+    print_str("  fib.dbis        - Fibonacci(10)=55 (recursion)\n")
+    print_str("  factorial.dbis   - 5! = 120 (recursion)\n")
+    print_str("  gcd.dbis        - GCD(48,18)=6 (algorithm)\n")
+    print_str("  prime.dbis      - Check if prime (predicate)\n\n")
+    return 0
+}
+
+func show_tests(): int {
+    print_str("VM Test Suite (14 tests):\n")
+    print_str("  String output:  PING, HELLO\n")
+    print_str("  Arithmetic:    ADD, SUB, MUL, DIV\n")
+    print_str("  Loops & Math:  LOOP, FIB, FACT\n")
+    print_str("  Advanced:      GCD, POW, PRIME\n")
+    print_str("  Utils:        REVERSE, MAX, ABS\n\n")
+    return 0
+}
+
+func show_opcodes(): int {
+    print_str("DBIS v0.3 Opcodes:\n")
+    print_str("  0x00 NOP   - No operation\n")
+    print_str("  0x01 HALT  - Stop execution\n")
+    print_str("  0x03 MOVI  - Move immediate to register\n")
+    print_str("  0x10 ADD   - Add registers\n")
+    print_str("  0x11 SUB   - Subtract registers\n")
+    print_str("  0x12 MUL   - Multiply registers\n")
+    print_str("  0x13 DIV   - Divide registers\n")
+    print_str("  0x20 CMP   - Compare registers\n")
+    print_str("  0x30 JMP   - Jump to address\n")
+    print_str("  0x31 JZ    - Jump if zero\n")
+    print_str("  0x32 JNZ   - Jump if not zero\n")
+    print_str("  0x37 CALL  - Call subroutine\n")
+    print_str("  0x38 RET   - Return from subroutine\n")
+    print_str("  0x40 PUSH  - Push to stack\n")
+    print_str("  0x41 POP   - Pop from stack\n")
+    print_str("  0x50 IN    - Input\n")
+    print_str("  0x51 OUT   - Output\n\n")
+    return 0
+}
+
+func show_arch(): int {
+    print_str("Architecture:\n")
+    print_str("  Registers: 16 (R0-R15)\n")
+    print_str("  RAM:       256 bytes\n")
+    print_str("  Stack:     Grows down from 255\n")
+    print_str("  Word size: 8 bits\n\n")
+    return 0
+}
 
 func main(): int {
-    print_str("=== deepiri-metal-omelette CLI ===\n")
-    print_str("DBIS v0.3 - All in Diva\n\n")
-    
-    print_str("Usage:\n")
-    print_str("  diva run vm/omelette.diva   - Run VM with tests\n")
-    print_str("  diva run cli/omelette.diva - Show this help\n\n")
-    
-    print_str("Example programs (.dbis):\n")
-    print_str("  ping.dbis       - Print 'Ping'\n")
-    print_str("  add.dbis       - Add 5+3=8\n")
-    print_str("  fib.dbis       - Fibonacci(10)=55\n")
-    print_str("  factorial.dbis - 5! = 120\n")
-    print_str("  gcd.dbis       - GCD(48,18)=6\n")
-    print_str("  prime.dbis     - Check if prime\n\n")
-    
-    print_str("VM Test Suite:\n")
-    print_str("  String: PING, HELLO\n")
-    print_str("  Math: ADD, SUB, MUL, DIV\n")
-    print_str("  Algo: FIB, FACT, GCD, POW\n")
-    print_str("  Utils: PRIME, REVERSE, MAX, ABS\n\n")
-    
-    print_str("DBIS v0.3 Opcodes:\n")
-    print_str("  0x00 NOP   0x01 HALT  0x03 MOVI  0x10 ADD\n")
-    print_str("  0x11 SUB   0x12 MUL   0x13 DIV   0x20 CMP\n")
-    print_str("  0x30 JMP   0x31 JZ    0x32 JNZ  0x37 CALL\n")
-    print_str("  0x38 RET   0x40 PUSH  0x41 POP   0x50 IN\n")
-    print_str("  0x51 OUT\n\n")
-    
+    show_help()
+    show_usage()
+    show_examples()
+    show_tests()
+    show_opcodes()
+    show_arch()
     print_str("=== Ready ===\n")
     return 0
 }

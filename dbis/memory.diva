@@ -1,0 +1,12 @@
+extern func print_int(x: int): void
+extern func print_str(x: str): void
+
+func main(): int {
+    print_str("=== Memory Map ===\n\n")
+    print_str("0x00-0x0F: Code (16 bytes)\n")
+    print_str("0x10-0x1F: Variables (16 bytes)\n")
+    print_str("0x20-0x2F: Stack (16 bytes)\n")
+    print_str("0x30-0xFF: Heap (208 bytes)\n")
+    print_str("\n=== Complete ===\n")
+    return 0
+}

@@ -1,0 +1,20 @@
+extern func print_int(x: int): void
+extern func print_str(x: str): void
+
+func main(): int {
+    print_str("=== Error Codes ===\n\n")
+    print_str("  0x00: Success\n")
+    print_str("  0x01: Invalid opcode\n")
+    print_str("  0x02: Invalid register\n")
+    print_str("  0x03: Invalid address\n")
+    print_str("  0x04: Division by zero\n")
+    print_str("  0x05: Stack overflow\n")
+    print_str("  0x06: Stack underflow\n")
+    print_str("  0x07: Invalid jump\n")
+    print_str("  0x08: Call stack overflow\n")
+    print_str("  0x09: Return without call\n")
+    print_str("  0x0A: Invalid input\n")
+    print_str("  0x0B: Out of memory\n\n")
+    print_str("=== Complete ===\n")
+    return 0
+}

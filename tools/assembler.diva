@@ -1,70 +1,161 @@
 extern func print_int(x: int): void
 extern func print_str(x: str): void
+extern func exit(x: int): void
 
-func main(): int {
+func show_header(): int {
     print_str("=== DBIS Assembler v0.3 ===\n")
-    print_str("Full assembler in Diva\n\n")
-    
+    print_str("Full assembler reference in Diva\n\n")
+    return 0
+}
+
+func show_ping(): int {
     print_str("Ping program ('Ping'):\n")
-    print_str("  MOVI R0, 80; OUT R0\n")
-    print_str("  MOVI R0, 105; OUT R0\n")
-    print_str("  MOVI R0, 110; OUT R0\n")
-    print_str("  MOVI R0, 103; OUT R0\n")
+    print_str("  MOVI R0, 80    ; 'P'\n")
+    print_str("  OUT R0\n")
+    print_str("  MOVI R0, 105   ; 'i'\n")
+    print_str("  OUT R0\n")
+    print_str("  MOVI R0, 110   ; 'n'\n")
+    print_str("  OUT R0\n")
+    print_str("  MOVI R0, 103   ; 'g'\n")
+    print_str("  OUT R0\n")
     print_str("  HALT\n")
-    print_str("  Bytes: 3 0 80 81 0 3 0 105 81 0 3 0 110 81 0 3 0 103 81 0 1\n\n")
-    
+    print_str("  Bytecode: 03 00 50 51 00 03 00 69 51 00 03 00 6E 51 00 03 00 67 51 00 01\n")
+    print_str("  Length: 21 bytes\n\n")
+    return 0
+}
+
+func show_add(): int {
     print_str("Add program (5+3=8):\n")
     print_str("  MOVI R0, 5\n")
     print_str("  MOVI R1, 3\n")
     print_str("  ADD R0, R1\n")
     print_str("  OUT R0\n")
     print_str("  HALT\n")
-    print_str("  Bytes: 3 0 5 3 1 3 16 0 1 81 0 1\n\n")
-    
+    print_str("  Bytecode: 03 00 05 03 01 03 10 01 51 00 01\n")
+    print_str("  Length: 12 bytes\n\n")
+    return 0
+}
+
+func show_sub(): int {
     print_str("Sub program (10-3=7):\n")
     print_str("  MOVI R0, 10\n")
     print_str("  MOVI R1, 3\n")
     print_str("  SUB R0, R1\n")
     print_str("  OUT R0\n")
     print_str("  HALT\n")
-    print_str("  Bytes: 3 0 10 3 1 3 17 0 1 81 0 1\n\n")
-    
+    print_str("  Bytecode: 03 00 0A 03 01 03 11 01 51 00 01\n")
+    print_str("  Length: 12 bytes\n\n")
+    return 0
+}
+
+func show_mul(): int {
     print_str("Mul program (4*3=12):\n")
     print_str("  MOVI R0, 4\n")
     print_str("  MOVI R1, 3\n")
     print_str("  MUL R0, R1\n")
     print_str("  OUT R0\n")
     print_str("  HALT\n")
-    print_str("  Bytes: 3 0 4 3 1 3 18 0 1 81 0 1\n\n")
-    
+    print_str("  Bytecode: 03 00 04 03 01 03 12 01 51 00 01\n")
+    print_str("  Length: 12 bytes\n\n")
+    return 0
+}
+
+func show_div(): int {
     print_str("Div program (12/4=3):\n")
     print_str("  MOVI R0, 12\n")
     print_str("  MOVI R1, 4\n")
     print_str("  DIV R0, R1\n")
     print_str("  OUT R0\n")
     print_str("  HALT\n")
-    print_str("  Bytes: 3 0 12 3 1 4 19 0 1 81 0 1\n\n")
-    
+    print_str("  Bytecode: 03 00 0C 03 01 04 13 01 51 00 01\n")
+    print_str("  Length: 12 bytes\n\n")
+    return 0
+}
+
+func show_loop(): int {
     print_str("Loop program (sum 1-10=55):\n")
-    print_str("  MOVI R0, 0\n")
-    print_str("  MOVI R1, 1\n")
-    print_str("  CMP R1, 10\n")
-    print_str("  JZ DONE\n")
-    print_str("  ADD R0, R1\n")
-    print_str("  ADD R1, 1\n")
+    print_str("  MOVI R0, 0      ; sum = 0\n")
+    print_str("  MOVI R1, 1     ; i = 1\n")
+    print_str("LOOP:\n")
+    print_str("  CMP R1, 10     ; compare i to 10\n")
+    print_str("  JZ DONE         ; if equal, jump to DONE\n")
+    print_str("  ADD R0, R1     ; sum = sum + i\n")
+    print_str("  ADD R1, 1      ; i = i + 1\n")
+    print_str("  JMP LOOP       ; jump to LOOP\n")
+    print_str("DONE:\n")
+    print_str("  OUT R0         ; output sum\n")
+    print_str("  HALT\n\n")
+    return 0
+}
+
+func show_fib(): int {
+    print_str("Fibonacci program (fibonacci 10=55):\n")
+    print_str("  MOVI R0, 0     ; a = 0\n")
+    print_str("  MOVI R1, 1      ; b = 1\n")
+    print_str("  MOVI R2, 10    ; n = 10\n")
+    print_str("LOOP:\n")
+    print_str("  CMP R2, 0       ; compare n to 0\n")
+    print_str("  JZ DONE         ; if zero, done\n")
+    print_str("  ADD R0, R1     ; temp = a + b\n")
+    print_str("  MOVI R1, R0    ; a = b\n")
+    print_str("  MOVI R0, temp  ; b = temp\n")
+    print_str("  SUB R2, 1     ; n = n - 1\n")
     print_str("  JMP LOOP\n")
     print_str("DONE:\n")
     print_str("  OUT R0\n")
-    print_str("  HALT\n")
-    print_str("  Bytes: 3 0 0 3 1 1 3 2 10 32 1 4 16 0 1 3 1 1 3 2 10 48 2 81 0 1\n\n")
-    
-    print_str("Opcode reference:\n")
-    print_str("  0x00 NOP   0x01 HALT  0x03 MOVI  0x10 ADD\n")
-    print_str("  0x11 SUB   0x12 MUL   0x13 DIV   0x20 CMP\n")
-    print_str("  0x30 JMP   0x31 JZ    0x32 JNZ  0x37 CALL\n")
-    print_str("  0x38 RET   0x40 PUSH  0x41 POP   0x50 IN\n")
-    print_str("  0x51 OUT\n\n")
-    
+    print_str("  HALT\n\n")
+    return 0
+}
+
+func show_fact(): int {
+    print_str("Factorial program (5! = 120):\n")
+    print_str("  MOVI R0, 1      ; result = 1\n")
+    print_str("  MOVI R1, 5      ; n = 5\n")
+    print_str("LOOP:\n")
+    print_str("  CMP R1, 0       ; compare n to 0\n")
+    print_str("  JZ DONE         ; if zero, done\n")
+    print_str("  MUL R0, R1     ; result = result * n\n")
+    print_str("  SUB R1, 1      ; n = n - 1\n")
+    print_str("  JMP LOOP\n")
+    print_str("DONE:\n")
+    print_str("  OUT R0\n")
+    print_str("  HALT\n\n")
+    return 0
+}
+
+func show_opcodes(): int {
+    print_str("Opcode Reference:\n")
+    print_str("  0x00 NOP   - No operation\n")
+    print_str("  0x01 HALT  - Stop execution\n")
+    print_str("  0x03 MOVI  - Move immediate (3 bytes)\n")
+    print_str("  0x10 ADD   - Add registers (2 bytes)\n")
+    print_str("  0x11 SUB   - Subtract registers (2 bytes)\n")
+    print_str("  0x12 MUL   - Multiply registers (2 bytes)\n")
+    print_str("  0x13 DIV   - Divide registers (2 bytes)\n")
+    print_str("  0x20 CMP   - Compare registers (2 bytes)\n")
+    print_str("  0x30 JMP   - Jump (2 bytes)\n")
+    print_str("  0x31 JZ    - Jump if zero (2 bytes)\n")
+    print_str("  0x32 JNZ   - Jump if not zero (2 bytes)\n")
+    print_str("  0x37 CALL  - Call subroutine (2 bytes)\n")
+    print_str("  0x38 RET   - Return (1 byte)\n")
+    print_str("  0x40 PUSH  - Push to stack (1 byte)\n")
+    print_str("  0x41 POP   - Pop from stack (1 byte)\n")
+    print_str("  0x50 IN    - Input (1 byte)\n")
+    print_str("  0x51 OUT   - Output (2 bytes)\n\n")
+    return 0
+}
+
+func main(): int {
+    show_header()
+    show_ping()
+    show_add()
+    show_sub()
+    show_mul()
+    show_div()
+    show_loop()
+    show_fib()
+    show_fact()
+    show_opcodes()
     print_str("=== Ready ===\n")
     return 0
 }

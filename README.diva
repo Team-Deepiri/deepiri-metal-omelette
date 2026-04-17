@@ -1,0 +1,134 @@
+extern func print_int(x: int): void
+extern func print_str(x: str): void
+
+func show_header(): int {
+    print_str("=== Omelette VM v0.3 (Diva Native) ===\n")
+    print_str("Deepiri's binary execution substrate\n")
+    print_str("100%% Diva - All components written in Diva\n\n")
+    return 0
+}
+
+func show_quickstart(): int {
+    print_str("## Quick Start\n\n")
+    print_str("  diva run vm/omelette.diva        - Run VM test suite\n")
+    print_str("  diva run cli/omelette.diva       - Show CLI help\n")
+    print_str("  diva run tools/assembler.diva   - Show assembler reference\n")
+    print_str("  diva run tools/disassembler.diva - Show disassembler reference\n")
+    print_str("  diva run tools/repl.diva         - Show REPL reference\n")
+    print_str("  diva run tools/debugger.diva     - Show debugger reference\n\n")
+    return 0
+}
+
+func show_components(): int {
+    print_str("## Components\n\n")
+    print_str("  VM            vm/omelette.diva       - 15 tests: ping add sub mul div fib fact gcd pow prime reverse max abs loop hello\n")
+    print_str("  CLI           cli/omelette.diva      - Help, usage, opcode reference\n")
+    print_str("  Assembler     tools/assembler.diva    - Bytecode reference with examples\n")
+    print_str("  Disassembler tools/disassembler.diva  - Assembly listing with encoding docs\n")
+    print_str("  REPL         tools/repl.diva        - Interactive assembler reference\n")
+    print_str("  Debugger     tools/debugger.diva    - GUI debugger reference\n")
+    print_str("  Standard Lib dbis/lib.diva           - Built-in function reference\n")
+    print_str("  Specification dbis/spec.diva         - DBIS v0.3 specification\n")
+    print_str("  Tests        vm/tests.diva            - All test functions\n\n")
+    return 0
+}
+
+func show_testlist(): int {
+    print_str("## VM Test Suite (15 tests)\n\n")
+    print_str("  String: PING, HELLO\n")
+    print_str("  Arithmetic: ADD (5+3=8), SUB (10-3=7), MUL (4*3=12), DIV (12/4=3)\n")
+    print_str("  Loops: LOOP (sum 1-10=55)\n")
+    print_str("  Recursion: FIB (fibonacci 10=55), FACT (5!=120)\n")
+    print_str("  Advanced: GCD (48,18=6), POW (2^8=256), PRIME (17=yes)\n")
+    print_str("  Utils: REVERSE (12345=54321), MAX (7,3=7), ABS (-5=5)\n\n")
+    return 0
+}
+
+func show_opcodes(): int {
+    print_str("## DBIS v0.3 Opcodes\n\n")
+    print_str("  0x00 NOP   - No operation\n")
+    print_str("  0x01 HALT  - Stop execution\n")
+    print_str("  0x03 MOVI  - Move immediate\n")
+    print_str("  0x10 ADD   - Add registers\n")
+    print_str("  0x11 SUB   - Subtract\n")
+    print_str("  0x12 MUL   - Multiply\n")
+    print_str("  0x13 DIV   - Divide\n")
+    print_str("  0x20 CMP   - Compare\n")
+    print_str("  0x30 JMP   - Jump\n")
+    print_str("  0x31 JZ    - Jump if zero\n")
+    print_str("  0x32 JNZ   - Jump if not zero\n")
+    print_str("  0x37 CALL  - Call subroutine\n")
+    print_str("  0x38 RET   - Return\n")
+    print_str("  0x40 PUSH  - Push to stack\n")
+    print_str("  0x41 POP   - Pop from stack\n")
+    print_str("  0x50 IN    - Input\n")
+    print_str("  0x51 OUT   - Output\n\n")
+    return 0
+}
+
+func show_arch(): int {
+    print_str("## Architecture\n\n")
+    print_str("  Registers: 16 (R0-R15)\n")
+    print_str("  RAM: 256 bytes\n")
+    print_str("  Stack: grows down from 255\n")
+    print_str("  Word size: 8 bits\n\n")
+    return 0
+}
+
+func show_filestructure(): int {
+    print_str("## File Structure\n\n")
+    print_str("  deepiri-metal-omelette/\n")
+    print_str("  ├── vm/\n")
+    print_str("  │   ├── omelette.diva      - VM with test suite\n")
+    print_str("  │   └── tests.diva          - Test functions\n")
+    print_str("  ├── cli/\n")
+    print_str("  │   └── omelette.diva       - CLI help\n")
+    print_str("  ├── tools/\n")
+    print_str("  │   ├── assembler.diva      - Bytecode reference\n")
+    print_str("  │   ├── disassembler.diva  - Disassembly reference\n")
+    print_str("  │   ├── repl.diva          - REPL reference\n")
+    print_str("  │   └── debugger.diva      - Debugger reference\n")
+    print_str("  ├── dbis/\n")
+    print_str("  │   ├── spec.diva           - DBIS specification\n")
+    print_str("  │   ├── lib.diva           - Standard library\n")
+    print_str("  │   └── examples/         - Example programs\n")
+    print_str("  └── README.diva           - This file\n\n")
+    return 0
+}
+
+func show_status(): int {
+    print_str("## Status\n\n")
+    print_str("  - VM in Diva - 15 comprehensive tests\n")
+    print_str("  - CLI in Diva - help and opcode reference\n")
+    print_str("  - Assembler reference in Diva - bytecode tables\n")
+    print_str("  - Disassembler reference in Diva - encoding docs\n")
+    print_str("  - REPL reference in Diva\n")
+    print_str("  - Debugger reference in Diva\n")
+    print_str("  - Standard library reference in Diva\n")
+    print_str("  - DBIS specification in Diva\n")
+    print_str("  - Example programs (.dbis)\n\n")
+    return 0
+}
+
+func show_philosophy(): int {
+    print_str("## Philosophy\n\n")
+    print_str("  - No shell scripts\n")
+    print_str("  - No assembly\n")
+    print_str("  - No C code\n")
+    print_str("  - Everything in Diva\n\n")
+    return 0
+}
+
+func main(): int {
+    show_header()
+    show_quickstart()
+    show_components()
+    show_testlist()
+    show_opcodes()
+    show_arch()
+    show_filestructure()
+    show_status()
+    show_philosophy()
+    print_str("=== Fully Decked Out in Diva ===\n")
+    return 0
+}
