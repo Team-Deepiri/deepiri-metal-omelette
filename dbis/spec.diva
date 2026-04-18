@@ -1,0 +1,83 @@
+extern func print_int(x: int): void
+extern func print_str(x: str): void
+
+func show_header(): int {
+    print_str("=== DBIS v0.3 Specification ===\n")
+    print_str("Deepiri Binary Intermediate Representation\n")
+    print_str("Version 0.3 - Final\n\n")
+    return 0
+}
+
+func show_overview(): int {
+    print_str("## Overview\n")
+    print_str("DBIS is a simple stack-based bytecode VM.\n")
+    print_str("Written entirely in Diva.\n\n")
+    return 0
+}
+
+func show_registers(): int {
+    print_str("## Registers\n")
+    print_str("  R0-R15: 16 general purpose registers\n")
+    print_str("  PC: Program counter\n")
+    print_str("  SP: Stack pointer (starts at 255)\n")
+    print_str("  Flags:Condition flags\n\n")
+    return 0
+}
+
+func show_memory(): int {
+    print_str("## Memory\n")
+    print_str("  RAM: 256 bytes (0-255)\n")
+    print_str("  Stack: grows down from 255\n")
+    print_str("  Code: loaded at address 0\n\n")
+    return 0
+}
+
+func show_opcodes(): int {
+    print_str("## Opcodes\n")
+    print_str("  0x00 NOP   - No operation\n")
+    print_str("  0x01 HALT  - Stop execution\n")
+    print_str("  0x03 MOVI  - Move immediate (3 bytes)\n")
+    print_str("  0x10 ADD   - Add registers (2 bytes)\n")
+    print_str("  0x11 SUB   - Subtract\n")
+    print_str("  0x12 MUL   - Multiply\n")
+    print_str("  0x13 DIV   - Divide\n")
+    print_str("  0x20 CMP   - Compare\n")
+    print_str("  0x30 JMP   - Jump\n")
+    print_str("  0x31 JZ    - Jump if zero\n")
+    print_str("  0x32 JNZ   - Jump if not zero\n")
+    print_str("  0x37 CALL  - Call\n")
+    print_str("  0x38 RET   - Return\n")
+    print_str("  0x40 PUSH  - Push\n")
+    print_str("  0x41 POP   - Pop\n")
+    print_str("  0x50 IN    - Input\n")
+    print_str("  0x51 OUT   - Output\n\n")
+    return 0
+}
+
+func show_encoding(): int {
+    print_str("## Encoding\n")
+    print_str("  1-byte: opcode only\n")
+    print_str("  2-byte: opcode + reg pair\n")
+    print_str("  3-byte: opcode + reg + immediate\n\n")
+    return 0
+}
+
+func show_callconvention(): int {
+    print_str("## Calling Convention\n")
+    print_str("  Arguments: R0, R1, R2, ...\n")
+    print_str("  Return: R0\n")
+    print_str("  Callee-saved: R4-R7\n\n")
+    return 0
+}
+
+func main(): int {
+    show_header()
+    show_overview()
+    show_registers()
+    show_memory()
+    show_opcodes()
+    show_encoding()
+    show_callconvention()
+    print_str("=== End of Specification ===\n")
+    return 0
+}

@@ -1,0 +1,22 @@
+extern func print_int(x: int): void
+extern func print_str(x: str): void
+
+func main(): int {
+    print_str("=== Hardware Emulator ===\n\n")
+    print_str("CPU:\n")
+    print_str("  Type: 8-bit\n")
+    print_str("  Registers: 16\n")
+    print_str("  Flags: Z,C,N\n\n")
+    print_str("Memory:\n")
+    print_str("  RAM: 256 bytes\n")
+    print_str("  ROM: 256 bytes\n\n")
+    print_str("I/O:\n")
+    print_str("  Display: 8x8 LED matrix\n")
+    print_str("  Keyboard: 16 keys\n")
+    print_str("  Serial: 9600 baud\n\n")
+    print_str("Timer:\n")
+    print_str("  16-bit counter\n")
+    print_str("  Interrupt on overflow\n\n")
+    print_str("=== Complete ===\n")
+    return 0
+}

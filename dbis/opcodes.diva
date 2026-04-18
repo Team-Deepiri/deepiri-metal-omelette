@@ -1,0 +1,26 @@
+extern func print_int(x: int): void
+extern func print_str(x: str): void
+
+func main(): int {
+    print_str("=== Opcodes ===\n\n")
+    print_str("0x00 NOP\n")
+    print_str("0x01 HALT\n")
+    print_str("0x02 \n")
+    print_str("0x03 MOVI\n")
+    print_str("0x10 ADD\n")
+    print_str("0x11 SUB\n")
+    print_str("0x12 MUL\n")
+    print_str("0x13 DIV\n")
+    print_str("0x20 CMP\n")
+    print_str("0x30 JMP\n")
+    print_str("0x31 JZ\n")
+    print_str("0x32 JNZ\n")
+    print_str("0x37 CALL\n")
+    print_str("0x38 RET\n")
+    print_str("0x40 PUSH\n")
+    print_str("0x41 POP\n")
+    print_str("0x50 IN\n")
+    print_str("0x51 OUT\n\n")
+    print_str("=== Complete ===\n")
+    return 0
+}

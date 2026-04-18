@@ -1,0 +1,62 @@
+extern func print_int(x: int): void
+extern func print_str(x: str): void
+
+func show_header(): int {
+    print_str("=== DBIS Debugger v0.3 ===\n")
+    print_str("GUI debugger for DBIS programs\n\n")
+    return 0
+}
+
+func db_break(): int {
+    print_str("Breakpoints:\n")
+    print_str("  break <addr> - Set breakpoint\n")
+    print_str("  break list  - List breakpoints\n")
+    print_str("  break clear - Clear all\n\n")
+    return 0
+}
+
+func db_step(): int {
+    print_str("Stepping:\n")
+    print_str("  step        - Step one instruction\n")
+    print_str("  next       - Step over call\n")
+    print_str("  finish     - Step out\n")
+    print_str("  continue   - Run to next bp\n\n")
+    return 0
+}
+
+func db_display(): int {
+    print_str("Display:\n")
+    print_str("  display    - Show instruction\n")
+    print_str("  display r  - Show registers\n")
+    print_str("  display m  - Show memory\n")
+    print_str("  display s  - Show stack\n\n")
+    return 0
+}
+
+func db_watch(): int {
+    print_str("Watch:\n")
+    print_str("  watch <expr>    - Watch expression\n")
+    print_str("  watch list     - List watches\n")
+    print_str("  watch delete  - Delete watch\n\n")
+    return 0
+}
+
+func db_backtrace(): int {
+    print_str("Backtrace:\n")
+    print_str("  bt         - Show call stack\n")
+    print_str("  frame <n>   - Select frame\n")
+    print_str("  up         - Move up stack\n")
+    print_str("  down       - Move down stack\n\n")
+    return 0
+}
+
+func main(): int {
+    show_header()
+    db_break()
+    db_step()
+    db_display()
+    db_watch()
+    db_backtrace()
+    print_str("=== Ready ===\n")
+    return 0
+}

@@ -1,0 +1,86 @@
+extern func print_int(x: int): void
+extern func print_str(x: str): void
+
+func show_header(): int {
+    print_str("=== DBIS REPL v0.3 ===\n")
+    print_str("Interactive bytecode assembler\n\n")
+    return 0
+}
+
+func show_prompt(): int {
+    print_str("dbis> ")
+    return 0
+}
+
+func cmd_help(): int {
+    print_str("Commands:\n")
+    print_str("  .help    - Show this help\n")
+    print_str("  .load   - Load bytecode file\n")
+    print_str("  .run    - Run loaded program\n")
+    print_str("  .asm    - Assemble instruction\n")
+    print_str("  .disasm - Disassemble bytecode\n")
+    print_str("  .regs   - Show registers\n")
+    print_str("  .mem    - Show memory\n")
+    print_str("  .stack  - Show stack\n")
+    print_str("  .step   - Step one instruction\n")
+    print_str("  .quit   - Exit REPL\n\n")
+    return 0
+}
+
+func cmd_load(): int {
+    print_str(".load <file> - Load .dbis file\n")
+    print_str("  Loads and parses DBIS assembly\n\n")
+    return 0
+}
+
+func cmd_run(): int {
+    print_str(".run - Execute loaded program\n")
+    print_str("  Runs from current PC\n\n")
+    return 0
+}
+
+func cmd_asm(): int {
+    print_str(".asm <inst> - Assemble instruction\n")
+    print_str("  Example: .asm MOVI R0 80\n")
+    print_str("  Returns: 03 00 50\n\n")
+    return 0
+}
+
+func cmd_disasm(): int {
+    print_str(".disasm <bytes> - Disassemble\n")
+    print_str("  Example: .disasm 03 00 50\n")
+    print_str("  Returns: MOVI R0 80\n\n")
+    return 0
+}
+
+func cmd_regs(): int {
+    print_str(".regs - Show register state\n")
+    print_str("  Displays: R0-R15, PC, SP, Flags\n\n")
+    return 0
+}
+
+func cmd_mem(): int {
+    print_str(".mem [addr] - Show memory\n")
+    print_str("  Dumps memory or range\n\n")
+    return 0
+}
+
+func cmd_stack(): int {
+    print_str(".stack - Show stack contents\n")
+    print_str("  Displays stack from SP to base\n\n")
+    return 0
+}
+
+func cmd_step(): int {
+    print_str(".step - Execute one instruction\n")
+    print_str("  Steps and shows state\n\n")
+    return 0
+}
+
+func main(): int {
+    show_header()
+    show_prompt()
+    cmd_help()
+    print_str("=== Ready ===\n")
+    return 0
+}

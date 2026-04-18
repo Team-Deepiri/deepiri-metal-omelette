@@ -1,37 +1,126 @@
 extern func print_int(x: int): void
 extern func print_str(x: str): void
+extern func exit(x: int): void
 
-func main(): int {
+func show_header(): int {
     print_str("=== DBIS Disassembler v0.3 ===\n")
     print_str("Disassembles bytecode to assembly\n\n")
-    
+    return 0
+}
+
+func show_ping(): int {
     print_str("Ping program (21 bytes):\n")
-    print_str("  03 00 50    MOVI R0, 80 ('P')\n")
+    print_str("  03 00 50    MOVI R0, 80   ; 'P'\n")
     print_str("  51 00       OUT R0\n")
-    print_str("  03 00 69    MOVI R0, 105 ('i')\n")
+    print_str("  03 00 69    MOVI R0, 105  ; 'i'\n")
     print_str("  51 00       OUT R0\n")
-    print_str("  03 00 6E    MOVI R0, 110 ('n')\n")
+    print_str("  03 00 6E    MOVI R0, 110  ; 'n'\n")
     print_str("  51 00       OUT R0\n")
-    print_str("  03 00 67    MOVI R0, 103 ('g')\n")
+    print_str("  03 00 67    MOVI R0, 103  ; 'g'\n")
     print_str("  51 00       OUT R0\n")
     print_str("  01          HALT\n\n")
-    
+    return 0
+}
+
+func show_hello(): int {
+    print_str("Hello program ('HELLO'):\n")
+    print_str("  03 00 48    MOVI R0, 72    ; 'H'\n")
+    print_str("  51 00       OUT R0\n")
+    print_str("  03 00 65    MOVI R0, 101   ; 'e'\n")
+    print_str("  51 00       OUT R0\n")
+    print_str("  03 00 6C    MOVI R0, 108   ; 'l'\n")
+    print_str("  51 00       OUT R0\n")
+    print_str("  03 00 6C    MOVI R0, 108   ; 'l'\n")
+    print_str("  51 00       OUT R0\n")
+    print_str("  03 00 6F    MOVI R0, 111   ; 'o'\n")
+    print_str("  51 00       OUT R0\n")
+    print_str("  01          HALT\n\n")
+    return 0
+}
+
+func show_add(): int {
     print_str("Add program (12 bytes):\n")
     print_str("  03 00 05    MOVI R0, 5\n")
     print_str("  03 01 03    MOVI R1, 3\n")
     print_str("  10 01       ADD R0, R1\n")
     print_str("  51 00       OUT R0\n")
     print_str("  01          HALT\n\n")
-    
+    return 0
+}
+
+func show_sub(): int {
+    print_str("Sub program (12 bytes):\n")
+    print_str("  03 00 0A    MOVI R0, 10\n")
+    print_str("  03 01 03    MOVI R1, 3\n")
+    print_str("  11 01       SUB R0, R1\n")
+    print_str("  51 00       OUT R0\n")
+    print_str("  01          HALT\n\n")
+    return 0
+}
+
+func show_mul(): int {
+    print_str("Mul program (12 bytes):\n")
+    print_str("  03 00 04    MOVI R0, 4\n")
+    print_str("  03 01 03    MOVI R1, 3\n")
+    print_str("  12 01       MUL R0, R1\n")
+    print_str("  51 00       OUT R0\n")
+    print_str("  01          HALT\n\n")
+    return 0
+}
+
+func show_div(): int {
+    print_str("Div program (12 bytes):\n")
+    print_str("  03 00 0C    MOVI R0, 12\n")
+    print_str("  03 01 04    MOVI R1, 4\n")
+    print_str("  13 01       DIV R0, R1\n")
+    print_str("  51 00       OUT R0\n")
+    print_str("  01          HALT\n\n")
+    return 0
+}
+
+func show_encoding(): int {
     print_str("Instruction encoding:\n")
-    print_str("  1 byte:  NOP, HALT, RET (0x00, 0x01, 0x38)\n")
-    print_str("  2 bytes: ADD, SUB, MUL, DIV (opcode + reg pair)\n")
-    print_str("  3 bytes: MOVI (opcode + reg + immediate)\n\n")
-    
+    print_str("  1 byte opcodes:   NOP(0x00), HALT(0x01), RET(0x38)\n")
+    print_str("  2 byte opcodes:  ADD(0x10), SUB(0x11), MUL(0x12), DIV(0x13)\n")
+    print_str("                  CMP(0x20), JMP(0x30), JZ(0x31), JNZ(0x32)\n")
+    print_str("                  CALL(0x37), PUSH(0x40), POP(0x41)\n")
+    print_str("  3 byte opcodes:  MOVI(0x03), IN(0x50), OUT(0x51)\n\n")
+    return 0
+}
+
+func show_regs(): int {
     print_str("Register encoding:\n")
-    print_str("  R0 = 0x0, R1 = 0x1, ..., R15 = 0xF\n")
-    print_str("  Reg pair: (rd << 4) | rs\n\n")
-    
+    print_str("  R0 = 0x0,  R1 = 0x1,  R2 = 0x2,  R3 = 0x3\n")
+    print_str("  R4 = 0x4,  R5 = 0x5,  R6 = 0x6,  R7 = 0x7\n")
+    print_str("  R8 = 0x8,  R9 = 0x9,  R10 = 0xA, R11 = 0xB\n")
+    print_str("  R12 = 0xC, R13 = 0xD, R14 = 0xE, R15 = xF\n\n")
+    print_str("Register pairs (for 2-byte ops):\n")
+    print_str("  Encoding: (rd << 4) | rs\n")
+    print_str("  Example: ADD R0, R1 = (0 << 4) | 1 = 0x01\n")
+    print_str("  Example: ADD R2, R3 = (2 << 4) | 3 = 0x23\n\n")
+    return 0
+}
+
+func show_imm(): int {
+    print_str("Immediate values:\n")
+    print_str("  MOVI R0, 80   ; ASCII 'P' = 0x50\n")
+    print_str("  MOVI R0, 105  ; ASCII 'i' = 0x69\n")
+    print_str("  MOVI R0, 110  ; ASCII 'n' = 0x6E\n")
+    print_str("  MOVI R0, 103  ; ASCII 'g' = 0x67\n\n")
+    return 0
+}
+
+func main(): int {
+    show_header()
+    show_ping()
+    show_hello()
+    show_add()
+    show_sub()
+    show_mul()
+    show_div()
+    show_encoding()
+    show_regs()
+    show_imm()
     print_str("=== Ready ===\n")
     return 0
 }

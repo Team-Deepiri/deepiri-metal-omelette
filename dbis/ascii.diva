@@ -1,0 +1,30 @@
+extern func print_int(x: int): void
+extern func print_str(x: str): void
+
+func main(): int {
+    print_str("=== ASCII Table ===\n\n")
+    print_str("32  : space\n")
+    print_str("33  !: exclamation\n")
+    print_str("34  \": double quote\n")
+    print_str("35  #: hash\n")
+    print_str("36  $: dollar\n")
+    print_str("37  %: percent\n")
+    print_str("38  &: ampersand\n")
+    print_str("39  ': single quote\n")
+    print_str("40  (: left paren\n")
+    print_str("41  ): right paren\n")
+    print_str("42  *: asterisk\n")
+    print_str("43  +: plus\n")
+    print_str("44  ,: comma\n")
+    print_str("45  -: minus\n")
+    print_str("46  .: period\n")
+    print_str("47  /: slash\n")
+    print_str("48  0: digit zero\n")
+    print_str("57  9: digit nine\n")
+    print_str("65  A: uppercase A\n")
+    print_str("90  Z: uppercase Z\n")
+    print_str("97  a: lowercase a\n")
+    print_str("122 z: lowercase z\n")
+    print_str("\n=== Complete ===\n")
+    return 0
+}

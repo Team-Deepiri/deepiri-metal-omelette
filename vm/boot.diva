@@ -1,0 +1,13 @@
+extern func print_int(x: int): void
+extern func print_str(x: str): void
+
+func main(): int {
+    print_str("=== Bootloader ===\n\n")
+    print_str("1. Load bytecode from ROM\n")
+    print_str("2. Initialize registers\n")
+    print_str("3. Set SP to 255\n")
+    print_str("4. Set PC to 0\n")
+    print_str("5. Jump to entry\n\n")
+    print_str("=== Ready ===\n")
+    return 0
+}

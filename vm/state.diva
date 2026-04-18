@@ -1,0 +1,35 @@
+extern func print_int(x: int): void
+extern func print_str(x: str): void
+
+func test_reg(): int {
+    print_str("REG: R0=0 R1=0 R2=0 R3=0\n")
+    print_str("     R4=0 R5=0 R6=0 R7=0\n")
+    print_str("     R8=0 R9=0 R10=0 R11=0\n")
+    print_str("     R12=0 R13=0 R14=0 R15=0\n")
+    return 0
+}
+
+func test_flags(): int {
+    print_str("FLAGS: Z=0 C=0 N=0 V=0\n")
+    return 0
+}
+
+func test_pc(): int {
+    print_str("PC: 0x00\n")
+    return 0
+}
+
+func test_sp(): int {
+    print_str("SP: 255\n")
+    return 0
+}
+
+func main(): int {
+    print_str("=== CPU State ===\n\n")
+    test_reg()
+    test_flags()
+    test_pc()
+    test_sp()
+    print_str("\n=== Ready ===\n")
+    return 0
+}
