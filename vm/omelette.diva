@@ -1,5 +1,6 @@
 import "std/vec.diva"
 import "std/io.diva"
+import "cell.diva"
 
 // VM context [0]=PC, [1]=SP, [2]=Flags, [3]=RegistersVec, [4]=MemoryVec, [5]=Halted
 func vm_new(): int {
@@ -28,15 +29,12 @@ func vm_new(): int {
 }
 
 func vm_pc(vm: int): int { return int_vec_get(vm, 0) }
-func vm_set_pc(vm: int, val: int): void { 
-    // Manual vec update since std/vec.diva lacks int_vec_set
-    // We'll use a local trick: if we need to set, we'd need a real setter.
-    // Given std/vec.diva lacks it, we might have to use mut_new/mut_set from cell.diva
+func vm_set_pc(vm: int, val: int): void {
+    // Stub: real VM uses vm_ctx_* with cells; int_vec has no in-place set.
+    return
 }
 
 // Re-defining VM with cells for mutability since int_vec is read-only-ish without a setter
-import "cell.diva"
-
 func vm_ctx_new(): int {
     var ctx = int_vec_new()
     int_vec_push(ctx, mut_new(0)) // [0] PC
