@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diva:
+    name: Diva checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check Diva repository token
+        env:
+          DIVA_REPO_TOKEN: ${{ secrets.DIVA_REPO_TOKEN }}
+        run: |
+          if [ -z "$DIVA_REPO_TOKEN" ]; then
+            echo "::error::Missing DIVA_REPO_TOKEN. Add a read-only token or GitHub App token with access to the private Team-Deepiri/diva repository."
+            exit 1
+          fi
+
+      - name: Checkout Diva
+        uses: actions/checkout@v4
+        with:
+          repository: Team-Deepiri/diva
+          path: diva
+          token: ${{ secrets.DIVA_REPO_TOKEN }}
+
+      - name: Install Diva
+        working-directory: diva
+        run: |
+          NO_CLANG=1 DIVA_INSTALL_SEED_ONLY=1 ./scripts/install.sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Verify Diva
+        run: |
+          command -v diva
+          diva --version || true
+
+      - name: Run VM tests
+        run: |
+          diva run vm/omelette.diva
+          diva run vm/tests.diva
+          diva run vm/test_suite.diva
+
+      - name: Run smoke checks
+        run: |
+          diva run cli/omelette.diva
+          diva run tools/assembler.diva
+          diva run tools/disassembler.diva
+          diva run tools/repl.diva
+          diva run tools/debugger.diva
+          diva run vm/benchmarks.diva
